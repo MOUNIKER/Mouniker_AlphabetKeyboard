@@ -28,7 +28,7 @@ class KeyboardViewController: UIInputViewController {
                 self.addKeyboardButtons()
                 
             }else{
-                displayNumericKeys()
+              //  displayNumericKeys()
             }
             
         }
@@ -36,15 +36,15 @@ class KeyboardViewController: UIInputViewController {
     }
     
     var isContainerShowing = false {
-        
+
         didSet{
             if isContainerShowing {
-                self.childVCsNotif()
+                //self.childVCsNotif()
             }else {
-                NotificationCenter.default.removeObserver(self, name: .childVCInformation, object: nil)
+               // NotificationCenter.default.removeObserver(self, name: .childVCInformation, object: nil)
             }
         }
-        
+
     }
     
     var allTextButtons = [KeyboardButton]()
@@ -66,44 +66,7 @@ class KeyboardViewController: UIInputViewController {
         
     }
     
-    
-    var currentWord: String? {
-        var lastWord: String?
-        // 1
-        if let stringBeforeCursor = textDocumentProxy.documentContextBeforeInput {
-            // 2
-            stringBeforeCursor.enumerateSubstrings(in: stringBeforeCursor.startIndex...,
-                                                   options: .byWords)
-            { word, _, _, _ in
-                // 3
-                if let word = word {
-                    lastWord = word
-                }
-            }
-        }
-        return lastWord
-    }
-    
-    var isNumberPadNeeded: Bool = false {
 
-        didSet{
-
-            if isNumberPadNeeded {
-                // Show Number Pad
-                self.showNumberPad()
-            }else {
-                // Show Default Keyboard
-                for view in mainStackView.arrangedSubviews {
-                    view.removeFromSuperview()
-                }
-                self.addKeyboardButtons()
-            }
-
-        }
-
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,7 +77,7 @@ class KeyboardViewController: UIInputViewController {
         self.requestSupplementaryLexicon { (lexicon) in
             self.userLexicon = lexicon
         }
-        self.createObeservers()
+     //   self.createObeservers()
         
     }
     
@@ -142,12 +105,6 @@ class KeyboardViewController: UIInputViewController {
             colorScheme = .light
         }
         self.setColorScheme(colorScheme)
-        //Sets return key title on keyboard...
-        if let returnTitle = self.textDocumentProxy.returnKeyType {
-            let type = UIReturnKeyType(rawValue: returnTitle.rawValue)
-            guard let retTitle = type?.get(rawValue: (type?.rawValue)!) else {return}
-            self.returnButton.setTitle(retTitle, for: .normal)
-        }
     }
     
     //Handles NextKeyBoard Button Appearance..
@@ -263,7 +220,6 @@ class KeyboardViewController: UIInputViewController {
         button.setTitle(title, for: .normal)
         button.sizeToFit()
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         allTextButtons.append(button)
         
@@ -273,7 +229,6 @@ class KeyboardViewController: UIInputViewController {
     @objc func didTapButton(sender: UIButton) {
         
         let button = sender as UIButton
-//        self.manageShadowsOnKeys(button: button, isShadowsNeeded: false)
         guard let title = button.titleLabel?.text else { return }
         let proxy = self.textDocumentProxy
         
@@ -313,7 +268,6 @@ class KeyboardViewController: UIInputViewController {
         }
        
         button.sizeToFit()
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tag = tag
         
         //For Capitals...
@@ -399,14 +353,8 @@ class KeyboardViewController: UIInputViewController {
     }
     
     
-    @objc func HandlePaymentContainer() {
-        isContainerShowing = !isContainerShowing
-        self.handleContainerDisplay()
-    }
-    
     @objc func insertWhiteSpace() {
-        
-        attemptToReplaceCurrentWord()
+
         let proxy = self.textDocumentProxy
         proxy.insertText(" ")
         print("white space")
@@ -436,172 +384,7 @@ class KeyboardViewController: UIInputViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
-    
-    func createObeservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNotifs(notf:)), name: .containerShowAndHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNotifs(notf:)), name: .textProxyNilNotification, object: nil)
-    }
-    
-    
-    @objc func handleNotifs(notf: Notification) {
-        if notf.name == .textProxyNilNotification {
-            self.containerText = ""
-            return
-        }
-        if notf.name == .containerShowAndHideNotification {
-            resignFirstResponder()
-            self.HandlePaymentContainer()
-            
-            OperationQueue.current?.addOperation {
-                self.textDocumentProxy.insertText("The amount Rs.100 has been credited to your wallet...")
-            }
-        }
-    }
-    
-    //Show Payments Container as needed...
-    func handleContainerDisplay() {
-        self.KeyboardVCHeightConstraint.isActive = false
-        
-        UIView.animate(withDuration: 0.35) {
-            self.KeyboardVCHeightConstraint.isActive = true
-            
-            if self.isContainerShowing {
-                self.containerViewHeight = 150
-                self.KeyboardVCHeightConstraint.constant = self.keyboardHeight+self.containerViewHeight
-                //self.presentContainerVC()
-                return
-            } else {
-                self.isNumberPadNeeded = false
-                self.containerViewHeight = 0
-                self.KeyboardVCHeightConstraint.constant = self.keyboardHeight
-                if self.view.subviews.contains(self.mainVC.view) {
-//                    self.view.addConstraintsWithFormatString(formate: "H:|[v0]|", views: self.mainVC.view)
-//                    self.view.addConstraintsWithFormatString(formate: "V:|[v0(0)]", views: self.mainVC.view)
-                   // self.removeViewControllerAsChildViewController(childViewController: self.mainVC)
-                }
-                return
-            }
-        }
-        self.view.layoutIfNeeded()
-
-    }
-    
-    
-    // Add Child VC as container...
-    
-    lazy var mainVC: MainVC = {
-        var viewController = MainVC()
-        return viewController
-    }()
-    
-
-    
-    func childVCsNotif() {
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleChildVCNotifs(notf:)), name: .childVCInformation, object: nil)
-        
-    }
-    
-    @objc func handleChildVCNotifs(notf: Notification) {
-        
-        if let _ = notf.object as? ProcessVC {
-           // Show Number Pad on View
-            isNumberPadNeeded = true
-            return
-        }
-        
-        if let _ = notf.object as? ResultVC {
-            // Show Number Pad on View
-            isNumberPadNeeded = true
-            return
-        }
-        
-        isNumberPadNeeded = false
-        
-    }
-    
-    
-    func showNumberPad() {
-        
-        for view in mainStackView.arrangedSubviews {
-            view.removeFromSuperview()
-        }
-        let firstRow = [".","0"]
-        let secRow = ["1","2","3"]
-        let thirdRow = ["4","5","6"]
-        let fourthRow = ["7","8","9"]
-        
-        self.deleteButton = accessoryButtons(title: nil, img: #imageLiteral(resourceName: "backspace"), tag: 2)
-
-        let first = addRowsOnKeyboard(kbKeys: firstRow)
-        let second = addRowsOnKeyboard(kbKeys: secRow)
-        let third = addRowsOnKeyboard(kbKeys: thirdRow)
-        let fourth = addRowsOnKeyboard(kbKeys: fourthRow)
-        
-        let fsv = UIStackView(arrangedSubviews: [first, deleteButton])
-        fsv.alignment = .fill
-        fsv.distribution = .fill
-        fsv.spacing = 5
-        
-        deleteButton.widthAnchor.constraint(equalTo: fsv.widthAnchor, multiplier: 1.0/3.0, constant: -5.0).isActive = true
-
-        mainStackView.addArrangedSubview(fourth)
-        mainStackView.addArrangedSubview(third)
-        mainStackView.addArrangedSubview(second)
-        mainStackView.addArrangedSubview(fsv)
-
-    }
-    
-    func displayNumericKeys() {
-        
-        for view in mainStackView.arrangedSubviews {
-            view.removeFromSuperview()
-        }
-        
-        let nums = ["1","2","3","4","5","6","7","8","9","0"]
-        let splChars1 = ["-","/",":",";","(",")","\u{20B9}","&","@","*"]
-        let splChars2 = [".",",","?","!","#"]
-        
-        let numsRow = self.addRowsOnKeyboard(kbKeys: nums)
-        let splChars1Row = self.addRowsOnKeyboard(kbKeys: splChars1)
-        let splChars2Row = self.addRowsOnKeyboard(kbKeys: splChars2)
-
-         let (thirdRowSV,fourthRowSV) = serveiceKeys(midRow: splChars2Row)
-        
-        mainStackView.addArrangedSubview(numsRow)
-        mainStackView.addArrangedSubview(splChars1Row)
-        mainStackView.addArrangedSubview(thirdRowSV)
-        mainStackView.addArrangedSubview(fourthRowSV)
-
-    }
-    
-    
-    
+  
 }
 
 
-private extension KeyboardViewController {
-    func attemptToReplaceCurrentWord() {
-        // 1
-        guard let entries = userLexicon?.entries,
-            let currentWord = currentWord?.lowercased() else {
-                return
-        }
-        
-        // 2
-        let replacementEntries = entries.filter {
-            $0.userInput.lowercased() == currentWord
-        }
-        
-        if let replacement = replacementEntries.first {
-            // 3
-            for _ in 0..<currentWord.count {
-                textDocumentProxy.deleteBackward()
-            }
-            
-            // 4
-            textDocumentProxy.insertText(replacement.documentText)
-        }
-    }
-}
