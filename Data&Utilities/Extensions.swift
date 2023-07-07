@@ -2,8 +2,7 @@
 //  Extensions.swift
 //  RupeSoKeyboard
 //
-//  Created by Leela Prasad on 17/04/18.
-//  Copyright © 2018 Leela Prasad. All rights reserved.
+//  Created by Siva Mouniker on 07/07/23.
 //
 
 import UIKit

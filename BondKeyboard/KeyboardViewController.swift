@@ -2,20 +2,17 @@
 //  KeyboardViewController.swift
 //  BondKeyboard
 //
-//  Created by Leela Prasad on 30/04/18.
-//  Copyright © 2018 Leela Prasad. All rights reserved.
+//  Created by Siva Mouniker on 07/07/23.
 //
 
 import UIKit
 
 class KeyboardViewController: UIInputViewController {
     
-
     var capButton: KeyboardButton!
     var numericButton: KeyboardButton!
     var deleteButton: KeyboardButton!
     var nextKeyboardButton: KeyboardButton!
-    var rupeSoButton: KeyboardButton!
     var returnButton: KeyboardButton!
     var spacekey: KeyboardButton!
     var isCapitalsShowing = false
@@ -88,9 +85,9 @@ class KeyboardViewController: UIInputViewController {
     }
     
     var isNumberPadNeeded: Bool = false {
-        
+
         didSet{
-            
+
             if isNumberPadNeeded {
                 // Show Number Pad
                 self.showNumberPad()
@@ -101,9 +98,9 @@ class KeyboardViewController: UIInputViewController {
                 }
                 self.addKeyboardButtons()
             }
-            
+
         }
-        
+
     }
     
     
@@ -267,8 +264,6 @@ class KeyboardViewController: UIInputViewController {
         button.sizeToFit()
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
-       // button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-       // button.setTitleColor(UIColor.darkGray, for: .normal)
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         allTextButtons.append(button)
         
@@ -297,7 +292,6 @@ class KeyboardViewController: UIInputViewController {
         }) { (_) in
             UIView.animate(withDuration: 0.10, animations: {
                 button.transform = CGAffineTransform.identity
-//                self.manageShadowsOnKeys(button: button, isShadowsNeeded: true)
             })
         }
         
@@ -340,13 +334,6 @@ class KeyboardViewController: UIInputViewController {
             //}
             button.widthAnchor.constraint(equalToConstant: 45).isActive = true
         }
-        //Switch to and From Letters & Numeric Keys
-//        if button.tag == 3 {
-//            button.addTarget(self, action: #selector(handleSwitchingNumericsAndLetters(sender:)), for: .touchUpInside)
-//            button.widthAnchor.constraint(equalToConstant: 50).isActive = true
-//
-//            return button
-//        }
         //Next Keyboard Button... Globe Button Usually...
         if button.tag == 4 {
             button.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
@@ -390,7 +377,6 @@ class KeyboardViewController: UIInputViewController {
                 
             } else {
                 self.textDocumentProxy.deleteBackward()
-               // deleteLastWord()
             }
             
         case .ended:
@@ -398,7 +384,6 @@ class KeyboardViewController: UIInputViewController {
             return
         default:
             self.textDocumentProxy.deleteBackward()
-            //deleteLastWord()
         }
         
     }
@@ -413,11 +398,6 @@ class KeyboardViewController: UIInputViewController {
         isCapitalsShowing = !isCapitalsShowing
     }
     
-//    @objc func handleSwitchingNumericsAndLetters(sender: UIButton) {
-//
-//        areLettersShowing = !areLettersShowing
-//        print("Switching To and From Numeric and Alphabets")
-//    }
     
     @objc func HandlePaymentContainer() {
         isContainerShowing = !isContainerShowing
@@ -476,7 +456,6 @@ class KeyboardViewController: UIInputViewController {
             OperationQueue.current?.addOperation {
                 self.textDocumentProxy.insertText("The amount Rs.100 has been credited to your wallet...")
             }
-            //self.textDocumentProxy.insertText("The amount Rs.100 has been credited to your wallet...")
         }
     }
     
@@ -516,28 +495,7 @@ class KeyboardViewController: UIInputViewController {
         return viewController
     }()
     
-    func presentContainerVC() {
-        //self.addViewControllerAsChildViewController(childViewController: mainVC)
-    }
-    
-    
-//    private func addViewControllerAsChildViewController(childViewController: UIViewController) {
-//
-//        addChildViewController(childViewController)
-//        view.addSubview(childViewController.view)
-//        childViewController.view.frame = CGRect.init(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height-keyboardHeight)
-//        childViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        childViewController.didMove(toParentViewController: self)
-//
-//    }
-//
-//    private func removeViewControllerAsChildViewController(childViewController: UIViewController) {
-//
-//        childViewController.willMove(toParentViewController: nil)
-//        childViewController.view.removeFromSuperview()
-//        childViewController.removeFromParentViewController()
-//
-//    }
+
     
     func childVCsNotif() {
         

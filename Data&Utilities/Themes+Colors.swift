@@ -2,8 +2,7 @@
 //  Themes+Colors.swift
 //  SecNinjazKeyboard
 //
-//  Created by Leela Prasad on 30/04/18.
-//  Copyright © 2018 Leela Prasad. All rights reserved.
+//  Created by Siva Mouniker on 07/07/23.
 //
 
 import UIKit
@@ -46,8 +45,3 @@ struct KBColors {
     
 }
 
-
-//MARK: Color Constatnts
-
-//let containerPrimaryViewColor = UIColor.white
-//let containerSubViewBackgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
