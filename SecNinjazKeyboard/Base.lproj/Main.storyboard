@@ -17,16 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="k1C-JO-baF">
-                                <rect key="frame" x="12" y="32" width="351" height="175"/>
+                                <rect key="frame" x="12" y="32" width="351" height="45"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Default" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ETH-ha-okd">
-                                        <rect key="frame" x="0.0" y="0.0" width="351" height="175"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Text here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ETH-ha-okd">
+                                        <rect key="frame" x="0.0" y="0.0" width="351" height="45"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="175" id="IcZ-74-3kV"/>
+                                    <constraint firstAttribute="height" constant="45" id="IcZ-74-3kV"/>
                                 </constraints>
                             </stackView>
                         </subviews>

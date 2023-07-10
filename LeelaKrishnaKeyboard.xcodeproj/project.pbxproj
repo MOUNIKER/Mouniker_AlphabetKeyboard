@@ -21,9 +21,6 @@
 		5A4FAE602096F7340052E81A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FAE5F2096F7340052E81A /* Extensions.swift */; };
 		5A4FAE612096F73A0052E81A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FAE5F2096F7340052E81A /* Extensions.swift */; };
 		5A4FAE622096FBCD0052E81A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FAE3B2096F22B0052E81A /* Assets.xcassets */; };
-		5A4FAE65209700C00052E81A /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FAE64209700C00052E81A /* MainVC.swift */; };
-		5A4FAE67209700DD0052E81A /* ProcessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FAE66209700DD0052E81A /* ProcessVC.swift */; };
-		5A4FAE69209700EC0052E81A /* ResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FAE68209700EC0052E81A /* ResultVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,9 +61,6 @@
 		5A4FAE532096F5460052E81A /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		5A4FAE552096F5460052E81A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A4FAE5F2096F7340052E81A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		5A4FAE64209700C00052E81A /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
-		5A4FAE66209700DD0052E81A /* ProcessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessVC.swift; sourceTree = "<group>"; };
-		5A4FAE68209700EC0052E81A /* ResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,9 +152,6 @@
 		5A4FAE63209700A80052E81A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5A4FAE64209700C00052E81A /* MainVC.swift */,
-				5A4FAE66209700DD0052E81A /* ProcessVC.swift */,
-				5A4FAE68209700EC0052E81A /* ResultVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -279,11 +270,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A4FAE67209700DD0052E81A /* ProcessVC.swift in Sources */,
 				5A4FAE5E2096F6E40052E81A /* Themes+Colors.swift in Sources */,
-				5A4FAE65209700C00052E81A /* MainVC.swift in Sources */,
 				5A4FAE5D2096F6E00052E81A /* KeyboardButton.swift in Sources */,
-				5A4FAE69209700EC0052E81A /* ResultVC.swift in Sources */,
 				5A4FAE542096F5460052E81A /* KeyboardViewController.swift in Sources */,
 				5A4FAE612096F73A0052E81A /* Extensions.swift in Sources */,
 			);

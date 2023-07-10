@@ -17,55 +17,14 @@ class KeyboardViewController: UIInputViewController {
     var spacekey: KeyboardButton!
     var isCapitalsShowing = false
     
-    var areLettersShowing = true {
-        
-        didSet{
-            
-            if areLettersShowing {
-                for view in mainStackView.arrangedSubviews {
-                    view.removeFromSuperview()
-                }
-                self.addKeyboardButtons()
-                
-            }else{
-              //  displayNumericKeys()
-            }
-            
-        }
-        
-    }
     
-    var isContainerShowing = false {
-
-        didSet{
-            if isContainerShowing {
-                //self.childVCsNotif()
-            }else {
-               // NotificationCenter.default.removeObserver(self, name: .childVCInformation, object: nil)
-            }
-        }
-
-    }
     
     var allTextButtons = [KeyboardButton]()
     
     var keyboardHeight: CGFloat = 225
     var KeyboardVCHeightConstraint: NSLayoutConstraint!
     var containerViewHeight: CGFloat = 0
-    
-    var userLexicon: UILexicon?
-    
-    var notificationDictionary = [String: Any]()
-    
-    var containerText: String = "" {
         
-        didSet{
-            self.notificationDictionary["txt"] = self.containerText
-            NotificationCenter.default.post(name: .textProxyForContainer, object: nil, userInfo: self.notificationDictionary)
-        }
-        
-    }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,10 +33,6 @@ class KeyboardViewController: UIInputViewController {
         self.setNextKeyboardVisible(needsInputModeSwitchKey)
         self.KeyboardVCHeightConstraint = NSLayoutConstraint(item: self.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: keyboardHeight+containerViewHeight)
         self.view.addConstraint(self.KeyboardVCHeightConstraint)
-        self.requestSupplementaryLexicon { (lexicon) in
-            self.userLexicon = lexicon
-        }
-     //   self.createObeservers()
         
     }
     
@@ -110,7 +65,7 @@ class KeyboardViewController: UIInputViewController {
     //Handles NextKeyBoard Button Appearance..
     
     func setNextKeyboardVisible(_ visible: Bool) {
-        nextKeyboardButton.isHidden = !visible
+        //nextKeyboardButton.isHidden = !visible
     }
     
     //Set color scheme For keyboard appearance...
@@ -118,8 +73,8 @@ class KeyboardViewController: UIInputViewController {
         
         let themeColor = KBColors(colorScheme: colorScheme)
     
-        self.capButton.defaultBackgroundColor = themeColor.buttonHighlightColor
-        self.deleteButton.defaultBackgroundColor = themeColor.buttonHighlightColor
+        self.capButton.defaultBackgroundColor = themeColor.buttonBackgroundColor
+        self.deleteButton.defaultBackgroundColor = themeColor.buttonBackgroundColor
         self.returnButton.defaultBackgroundColor = themeColor.buttonBackgroundColor
         self.spacekey.defaultBackgroundColor = themeColor.buttonBackgroundColor
         
@@ -178,9 +133,6 @@ class KeyboardViewController: UIInputViewController {
         thirdRowSV.distribution = .fillProportionally
         thirdRowSV.spacing = 5
         
-//       self.numericButton = accessoryButtons(title: "123", img: nil, tag: 3)
-        self.nextKeyboardButton = accessoryButtons(title: nil, img: #imageLiteral(resourceName: "globe"), tag: 4)
-      //  self.rupeSoButton = accessoryButtons(title: nil, img: #imageLiteral(resourceName: "RupeSoKey"), tag: 5)
         self.spacekey = accessoryButtons(title: "space", img: nil, tag: 6)
         self.returnButton = accessoryButtons(title: "return", img: nil, tag: 7)
         
@@ -234,15 +186,7 @@ class KeyboardViewController: UIInputViewController {
         
         UIView.animate(withDuration: 0.25, animations: {
             button.transform = CGAffineTransform(scaleX: 1.20, y: 1.20)
-            self.inputView?.playInputClick​()
-            if self.isContainerShowing {
-                self.containerText = self.containerText + title
-                
-            }else{
-                if !self.isContainerShowing {
                     proxy.insertText(title)
-                }
-            }
             
         }) { (_) in
             UIView.animate(withDuration: 0.10, animations: {
@@ -276,32 +220,13 @@ class KeyboardViewController: UIInputViewController {
             button.widthAnchor.constraint(equalToConstant: 45).isActive = true
             return button
         }
-        //For BackDelete Key // Install Once Only..
+        //For BackDelete Key
         if button.tag == 2 {
-            let longPrssRcngr = UILongPressGestureRecognizer.init(target: self, action: #selector(onLongPressOfBackSpaceKey(longGestr:)))
-            
-            //if !(button.gestureRecognizers?.contains(longPrssRcngr))! {
-            longPrssRcngr.minimumPressDuration = 0.5
-            longPrssRcngr.numberOfTouchesRequired = 1
-            longPrssRcngr.allowableMovement = 0.1
-            button.addGestureRecognizer(longPrssRcngr)
-            //}
+            button.addTarget(self, action: #selector(manualAction(sender:)), for: .touchUpInside)
             button.widthAnchor.constraint(equalToConstant: 45).isActive = true
-        }
-        //Next Keyboard Button... Globe Button Usually...
-        if button.tag == 4 {
-            button.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
-            button.widthAnchor.constraint(equalToConstant: 50).isActive = true
-
             return button
         }
-        //Handle Rupee Button// For Showing Payment Container...
-//        if button.tag == 5 {
-//
-//            button.addTarget(self, action: #selector(HandlePaymentContainer), for: .touchUpInside)
-//            button.widthAnchor.constraint(equalToConstant: 50).isActive = true
-//            return button
-//        }
+
         //White Space Button...
         if button.tag == 6 {
 
@@ -321,26 +246,6 @@ class KeyboardViewController: UIInputViewController {
         
     }
     
-    @objc func onLongPressOfBackSpaceKey(longGestr: UILongPressGestureRecognizer) {
-        
-        switch longGestr.state {
-        case .began:
-            if isContainerShowing {
-                
-                self.containerText = String.init((self.containerText.dropLast()))
-                
-            } else {
-                self.textDocumentProxy.deleteBackward()
-            }
-            
-        case .ended:
-            print("Ended")
-            return
-        default:
-            self.textDocumentProxy.deleteBackward()
-        }
-        
-    }
     
     @objc func handleCapitalsAndLowerCase(sender: UIButton) {
         for button in allTextButtons {
@@ -351,8 +256,7 @@ class KeyboardViewController: UIInputViewController {
         }
         isCapitalsShowing = !isCapitalsShowing
     }
-    
-    
+        
     @objc func insertWhiteSpace() {
 
         let proxy = self.textDocumentProxy
@@ -362,29 +266,13 @@ class KeyboardViewController: UIInputViewController {
     
     @objc func handleReturnKey(sender: UIButton) {
              self.textDocumentProxy.insertText("\n")
-
     }
-    
-    
+ 
     @objc func manualAction(sender: UIButton) {
         let proxy = self.textDocumentProxy
         
-        if isContainerShowing {
-            
-            self.containerText = String.init((self.containerText.dropLast()))
-            
-        } else {
             proxy.deleteBackward()
-        }
         print("Else Case... Remaining Keys")
     }
-    
-    
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-  
+
 }
-
-
